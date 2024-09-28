@@ -187,9 +187,20 @@ namespace Nethermind.Init.Steps
             BlockhashProvider blockhashProvider = new(
                 _api.BlockTree, _api.SpecProvider, _api.WorldState, _api.LogManager);
 
-            if(_api.VMConfig is not null && _api.VMConfig.IsPatternMatchingEnabled)
+            var logManager = _api.LogManager;
+            var logger = logManager.GetClassLogger<InitializeBlockchain>();
+
+            IVMConfig vmConfig = _api.Config<IVMConfig>();
+            if(vmConfig is not null && vmConfig.IsPatternMatchingEnabled)
             {
+
+                logger.Info($"**************IsPatternMatchingEnabled is true");
+                logger.Info($"**************thresholds: pattern {vmConfig.PatternMatchingThreshold}, jit {vmConfig.JittingThreshold}");
+                logger.Info($"************** Initializing IlAnalyzer");
                 IlAnalyzer.Initialize();
+            } else
+            {
+                logger.Info($"!!!!!!!IsPatternMatchingEnabled is False!!!!");
             }
 
             VirtualMachine virtualMachine = new(
@@ -197,7 +208,7 @@ namespace Nethermind.Init.Steps
                 _api.SpecProvider,
                 codeInfoRepository,
                 _api.LogManager,
-                _api.VMConfig!);
+                vmConfig!);
 
             return virtualMachine;
         }
