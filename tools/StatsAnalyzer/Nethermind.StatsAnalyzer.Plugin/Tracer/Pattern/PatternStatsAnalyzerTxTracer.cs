@@ -53,7 +53,7 @@ public sealed class PatternStatsAnalyzerTxTracer : StatsAnalyzerTxTracer<Instruc
     }
 
 
-    public override void StartOperation(int pc, Instruction opcode, long gas, in ExecutionEnvironment env)
+    public override void StartOperation(int pc, Instruction opcode, long gas, in ExecutionEnvironment env, int codeSection = 0, int functionDepth = 0)
     {
         if (!_ignoreSet.Contains(opcode)) Queue?.Enqueue(opcode);
     }

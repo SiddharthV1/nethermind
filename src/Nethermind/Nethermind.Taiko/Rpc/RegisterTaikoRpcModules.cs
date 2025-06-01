@@ -79,6 +79,7 @@ public class RegisterTaikoRpcModules : RegisterRpcModules
         StepDependencyException.ThrowIfNull(_api.SpecProvider);
         TaikoProofModuleFactory proofModuleFactory = new(
             _api.WorldStateManager,
+            _api.ReadOnlyTxProcessingEnvFactory,
             _api.BlockTree,
             _api.BlockPreprocessor,
             _api.ReceiptFinder,
@@ -122,7 +123,6 @@ public class RegisterTaikoRpcModules : RegisterRpcModules
         StepDependencyException.ThrowIfNull(_api.BlockValidator);
         StepDependencyException.ThrowIfNull(_api.RewardCalculatorSource);
         StepDependencyException.ThrowIfNull(_api.KeyStore);
-        StepDependencyException.ThrowIfNull(_api.PeerPool);
         StepDependencyException.ThrowIfNull(_api.BadBlocksStore);
         StepDependencyException.ThrowIfNull(_api.WorldStateManager);
         StepDependencyException.ThrowIfNull(_api.BlockTree);

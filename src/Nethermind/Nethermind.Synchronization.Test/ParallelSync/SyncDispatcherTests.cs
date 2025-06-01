@@ -15,6 +15,7 @@ using Nethermind.Int256;
 using Nethermind.Logging;
 using Nethermind.Stats;
 using Nethermind.Stats.Model;
+using Nethermind.Synchronization.FastBlocks;
 using Nethermind.Synchronization.ParallelSync;
 using Nethermind.Synchronization.Peers;
 using Nethermind.Synchronization.Peers.AllocationStrategies;
@@ -47,7 +48,6 @@ public class SyncDispatcherTests
             await _peerSemaphore.WaitAsync(cancellationToken);
             ISyncPeer syncPeer = new MockSyncPeer("Nethermind", UInt256.One);
             SyncPeerAllocation allocation = new(new PeerInfo(syncPeer), contexts, _lock);
-            allocation.AllocateBestPeer([], Substitute.For<INodeStatsManager>(), Substitute.For<IBlockTree>());
             return allocation;
         }
 
@@ -72,6 +72,12 @@ public class SyncDispatcherTests
 
         public void ReportWeakPeer(PeerInfo peerInfo, AllocationContexts contexts)
         {
+        }
+
+        public Task<int?> EstimateRequestLimit(RequestType bodies, IPeerAllocationStrategy peerAllocationStrategy, AllocationContexts blocks,
+            CancellationToken token)
+        {
+            return Task.FromResult<int?>(null);
         }
 
         public void WakeUpAll()
@@ -116,7 +122,6 @@ public class SyncDispatcherTests
         }
 
         public event EventHandler<PeerBlockNotificationEventArgs> NotifyPeerBlock = static delegate { };
-        public event EventHandler<PeerHeadRefreshedEventArgs> PeerRefreshed = static delegate { };
 
         public ValueTask DisposeAsync()
         {

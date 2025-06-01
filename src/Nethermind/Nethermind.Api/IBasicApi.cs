@@ -22,7 +22,7 @@ namespace Nethermind.Api
 {
     public interface IBasicApi
     {
-        DisposableStack DisposeStack { get; }
+        IDisposableStack DisposeStack { get; }
 
         IAbiEncoder AbiEncoder { get; }
         [SkipServiceCollection]
@@ -40,6 +40,7 @@ namespace Nethermind.Api
         IKeyStore? KeyStore { get; set; }
         [SkipServiceCollection]
         ILogManager LogManager { get; }
+        [SkipServiceCollection]
         IProtectedPrivateKey? OriginalSignerKey { get; set; }
         IReadOnlyList<INethermindPlugin> Plugins { get; }
         [SkipServiceCollection]

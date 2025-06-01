@@ -37,7 +37,7 @@ namespace Nethermind.Api
         IBlockProducerRunner? BlockProducerRunner { get; set; }
 
         [SkipServiceCollection]
-        IBlockValidator? BlockValidator { get; }
+        IBlockValidator BlockValidator { get; }
 
         IEnode? Enode { get; set; }
         IFilterStore? FilterStore { get; set; }
@@ -53,13 +53,9 @@ namespace Nethermind.Api
         ISealer? Sealer { get; set; }
         ISealValidator? SealValidator { get; set; }
         ISealEngine SealEngine { get; set; }
-        IReadOnlyStateProvider? ChainHeadStateProvider { get; set; }
-        IStateReader? StateReader { get; set; }
+        IStateReader? StateReader { get; }
 
-        IWorldStateManager? WorldStateManager { get; set; }
-        INodeStorage? MainNodeStorage { get; set; }
-        CompositePruningTrigger? PruningTrigger { get; set; }
-        IVerifyTrieStarter? VerifyTrieStarter { get; set; }
+        IWorldStateManager? WorldStateManager { get; }
         IMainProcessingContext? MainProcessingContext { get; set; }
         ITxSender? TxSender { get; set; }
         INonceManager? NonceManager { get; set; }
@@ -83,10 +79,12 @@ namespace Nethermind.Api
 
         IBlockProducerEnvFactory? BlockProducerEnvFactory { get; set; }
         IBlockImprovementContextFactory? BlockImprovementContextFactory { get; set; }
+        IReadOnlyTxProcessingEnvFactory ReadOnlyTxProcessingEnvFactory { get; }
 
         IGasPriceOracle? GasPriceOracle { get; set; }
 
-        IEthSyncingInfo? EthSyncingInfo { get; set; }
+        [SkipServiceCollection]
+        IEthSyncingInfo? EthSyncingInfo { get; }
 
 
         IBlockProductionPolicy? BlockProductionPolicy { get; set; }
