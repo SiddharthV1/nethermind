@@ -44,6 +44,7 @@ public sealed class CallStatsAnalyzerTxTracer : StatsAnalyzerTxTracer<CallData, 
 
         foreach (var stat in stats)
         {
+
             var entry = new CallAnalyzerTraceEntry
             {
                 Address = stat.Address,
@@ -63,8 +64,10 @@ public sealed class CallStatsAnalyzerTxTracer : StatsAnalyzerTxTracer<CallData, 
         ExecutionType callType, bool isPrecompileCall = false)
     {
         if (!isPrecompileCall && new[]
-                    { ExecutionType.CALL, ExecutionType.STATICCALL, ExecutionType.CALLCODE, ExecutionType.DELEGATECALL }
-                .Contains(callType)) _currentAddress = to;
+                    { ExecutionType.TRANSACTION, ExecutionType.CALL, ExecutionType.STATICCALL, ExecutionType.CALLCODE, ExecutionType.DELEGATECALL, ExecutionType.EOFCALL, ExecutionType.EOFSTATICCALL,ExecutionType.EOFDELEGATECALL  }
+                .Contains(callType)) {
+            _currentAddress = to;
+        }
     }
 
 
@@ -77,10 +80,7 @@ public sealed class CallStatsAnalyzerTxTracer : StatsAnalyzerTxTracer<CallData, 
 
         _currentCodeSize = byteCode.Length;
 
-        if (_currentAddress != null && _currentCodeHash != null && _currentCodeSize != null)
-        {
-            Queue?.Enqueue(new CallData(_currentAddress, _currentCodeHash, _currentCodeSize.Value));
-        }
+        Queue?.Enqueue(new CallData(_currentAddress, Keccak.Compute(byteCode.Span), byteCode.Length));
         _currentAddress = null;
         _currentCodeHash = null;
         _currentCodeSize = null;

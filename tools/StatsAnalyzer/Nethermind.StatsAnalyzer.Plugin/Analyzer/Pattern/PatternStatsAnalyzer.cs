@@ -146,7 +146,9 @@ public class PatternStatsAnalyzer : TopNAnalyzer<Instruction, ulong, PatternStat
                     yield return new PatternStat(new NGram(ngram), count);
                 break;
             case SortOrder.Ascending:
-                var queue = new PriorityQueue<ulong, ulong>(TopN);
+                var queue = new PriorityQueue<ulong, ulong>();
+                foreach (var (ngram, count) in TopNQueue.UnorderedItems)
+                    queue.Enqueue(ngram, count);
                 while (queue.Count > 0)
                     if (queue.TryDequeue(out var ngram, out var count))
                         yield return new PatternStat(new NGram(ngram), count);
