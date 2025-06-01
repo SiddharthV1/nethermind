@@ -13,10 +13,10 @@ namespace Nethermind.StatsAnalyzer.Plugin.Tracer.Call;
 public class CallAnalyzerFileTracer : StatsAnalyzerFileTracer<CallAnalyzerTxTrace, CallStatsAnalyzerTxTracer>
 {
     private readonly CallStatsAnalyzer _callStatsAnalyzer;
-    private ResettableList<Address> _buffer;
+    private ResettableList<CallData> _buffer;
 
     public CallAnalyzerFileTracer(
-        ResettableList<Address> buffer,
+        ResettableList<CallData> buffer,
         int processingQueueSize,
         CallStatsAnalyzer callStatsAnalyzer,
         IFileSystem fileSystem,
@@ -47,7 +47,7 @@ public class CallAnalyzerFileTracer : StatsAnalyzerFileTracer<CallAnalyzerTxTrac
 
     protected override void ResetBufferAndTracer()
     {
-        _buffer = new ResettableList<Address>(_buffer.Count);
+        _buffer = new ResettableList<CallData>(_buffer.Count);
         Tracer = new CallStatsAnalyzerTxTracer(_buffer, _callStatsAnalyzer, Sort,
             Ct);
     }

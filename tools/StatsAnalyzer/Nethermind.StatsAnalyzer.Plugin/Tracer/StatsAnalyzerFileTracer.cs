@@ -26,8 +26,10 @@ public abstract class StatsAnalyzerFileTracer<TxTrace, TxTracer> : BlockTracerBa
     protected readonly SortOrder Sort;
     private int _pos;
     private long _currentBlock;
+    private DateTime _currentBlockTimestamp;
     protected Task CurrentTask = Task.CompletedTask;
     private long _initialBlock;
+    private DateTime _initialBlockTimestamp;
     private Task _lastTask = Task.CompletedTask;
     protected TxTracer Tracer;
 
@@ -70,7 +72,9 @@ public abstract class StatsAnalyzerFileTracer<TxTrace, TxTracer> : BlockTracerBa
                 Ct.ThrowIfCancellationRequested();
                 WriteTrace(
                     initialBlockNumber,
+                    _initialBlockTimestamp,
                     currentBlockNumber,
+                    _currentBlockTimestamp,
                     tracer,
                     FileName,
                     _fileSystem,
@@ -136,8 +140,12 @@ public abstract class StatsAnalyzerFileTracer<TxTrace, TxTracer> : BlockTracerBa
         base.StartNewBlockTrace(block);
         var number = block.Header.Number;
         if (_initialBlock == 0)
+        {
             _initialBlock = number;
+            _initialBlockTimestamp = block.TimestampDate;
+        }
         _currentBlock = number;
+        _currentBlockTimestamp = block.TimestampDate;
     }
 
 
@@ -163,7 +171,9 @@ public abstract class StatsAnalyzerFileTracer<TxTrace, TxTracer> : BlockTracerBa
 
     private static void WriteTrace(
         long initialBlockNumber,
+        DateTime initialBlockTimestampDate,
         long currentBlockNumber,
+        DateTime currentBlockTimestampDate,
         IStatsAnalyzerTxTracer<TxTrace> tracer,
         string fileName,
         IFileSystem fileSystem,
@@ -172,7 +182,7 @@ public abstract class StatsAnalyzerFileTracer<TxTrace, TxTracer> : BlockTracerBa
     {
         ct.ThrowIfCancellationRequested();
 
-        var trace = tracer.BuildResult(initialBlockNumber, currentBlockNumber);
+        var trace = tracer.BuildResult(initialBlockNumber, initialBlockTimestampDate , currentBlockNumber, currentBlockTimestampDate);
 
         ct.ThrowIfCancellationRequested();
 

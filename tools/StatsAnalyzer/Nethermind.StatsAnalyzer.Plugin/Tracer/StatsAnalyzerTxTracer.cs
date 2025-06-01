@@ -21,7 +21,7 @@ public abstract class StatsAnalyzerTxTracer<TData, TStat, TTrace>(
     protected readonly IStatsAnalyzer<TData, TStat> StatsAnalyzer = statsAnalyzer;
     protected StatsProcessingQueue<TData, TStat>? Queue = new(buffer, statsAnalyzer, ct);
 
-    public abstract TTrace BuildResult(long fromBlock = 0, long toBlock = 0);
+    public abstract TTrace BuildResult(long fromBlock = 0, DateTime fromTimeStampDate = default, long toBlock = 0, DateTime toTimeStampDate = default);
 
     protected void Build()
     {

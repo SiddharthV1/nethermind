@@ -27,7 +27,7 @@ public sealed class PatternStatsAnalyzerTxTracer : StatsAnalyzerTxTracer<Instruc
     }
 
 
-    public override PatternAnalyzerTxTrace BuildResult(long fromBlock = 0, long toBlock = 0)
+    public override PatternAnalyzerTxTrace BuildResult(long fromBlock = 0, DateTime fromTimeStampDate = default, long toBlock = 0, DateTime toTimeStampDate = default)
     {
         Build();
         PatternAnalyzerTxTrace trace = new();

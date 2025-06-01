@@ -9,12 +9,18 @@ namespace Nethermind.StatsAnalyzer.Plugin.Tracer.Call;
 public class CallAnalyzerTxTrace
 {
     [JsonPropertyName("initialBlockNumber")]
-    public long InitialBlockNumber { get; set; }
+    public required long InitialBlockNumber { get; set; }
+
+
+    [JsonPropertyName("initial_block_date_time")]
+    public required string InitialBlockDateTime { get; set; }
 
     [JsonPropertyName("currentBlockNumber")]
-    public long CurrentBlockNumber { get; set; }
+    public required long CurrentBlockNumber { get; set; }
 
+    [JsonPropertyName("current_block_date_time")]
+    public required string CurrentBlockDateTime { get; set; }
 
     [JsonPropertyName("stats")]
-    public List<CallAnalyzerTraceEntry> Entries { get; set; } = new();
+    public required List<CallAnalyzerTraceEntry> Entries { get; set; }
 }

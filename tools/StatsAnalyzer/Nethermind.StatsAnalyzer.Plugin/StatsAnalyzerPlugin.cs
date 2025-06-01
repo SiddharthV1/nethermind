@@ -62,7 +62,7 @@ public class StatsAnalyzerPlugin(IPatternAnalyzerConfig patternAnalyzerConfig, I
 
         var analyzer = new CallStatsAnalyzer(callAnalyzerConfig.TopN);
         CallAnalyzerFileTracer callAnalyzerFileTracer = new(
-            new ResettableList<Address>(),
+            new ResettableList<CallData>(),
             callAnalyzerConfig.ProcessingQueueSize,
             analyzer,
             _api.FileSystem,
